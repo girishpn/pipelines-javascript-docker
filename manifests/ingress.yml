@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-    name: "aks1-d91d"
+    name: "aks2-d91d"
     labels:
-        app: "aks1-d91d"
+        app: "aks2-d91d"
     annotations:
         kubernetes.io/ingress.class: addon-http-application-routing
 spec:
@@ -13,5 +13,5 @@ spec:
             paths:
             - path: /
               backend:
-                serviceName: "aks1-d91d"
+                serviceName: "aks2-d91d"
                 servicePort: 80
