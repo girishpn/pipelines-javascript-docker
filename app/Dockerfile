@@ -3,9 +3,5 @@ FROM node:8
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-#RUN npm ci --only=production
+RUN echo 'memory_limit = -1' > /usr/local/etc/php/php-cli.ini
 
-COPY . .
-
-EXPOSE 8080
-CMD [ "npm", "start" ]
