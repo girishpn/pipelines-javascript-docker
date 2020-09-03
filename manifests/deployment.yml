@@ -1,19 +1,19 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: "aks1-d91d"
+  name: "aks2-d91d"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: "aks1-d91d" 
+      app: "aks2-d91d" 
   template:
     metadata:
       labels:
-        app: "aks1-d91d"
+        app: "aks2-d91d"
     spec:
       containers:
-        - name: "aks1-d91d"
-          image: "gpregistry1.azurecr.io/aks1"
+        - name: "aks2-d91d"
+          image: "gpregistry2.azurecr.io/aks2"
           ports:
           - containerPort: 80
