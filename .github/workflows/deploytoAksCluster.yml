@@ -1,0 +1,50 @@
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: gpreg1.azurecr.io
+        username: ${{ secrets.acr_gpreg1_username }}
+        password: ${{ secrets.acr_gpreg1_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/app" -f  "app/Dockerfile" -t gpreg1.azurecr.io/aks1:${{ github.sha }}
+        docker push gpreg1.azurecr.io/aks1:${{ github.sha }}
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+         kubeconfig: ${{ secrets.aks_aks1_kubeConfig }}
+      id: login
+    
+    - name: Create namespace
+      run: |
+        namespacePresent=`kubectl get namespace | grep aks1e4c4 | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace aks1e4c4`
+        fi
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: aks1e4c4
+        container-registry-url: gpreg1.azurecr.io
+        container-registry-username: ${{ secrets.acr_gpreg1_username }}
+        container-registry-password: ${{ secrets.acr_gpreg1_password }}
+        secret-name: aks1dockerauth
+       
+    - uses: azure/k8s-deploy@v1
+      with:
+        namespace: aks1e4c4
+        manifests: |
+          manifests/deployment-2.yml
+          manifests/service-1.yml
+        images: |
+          gpreg1.azurecr.io/aks1:${{ github.sha }}
+        imagepullsecrets: |
+          aks1dockerauth
