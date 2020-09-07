@@ -4,6 +4,9 @@ metadata:
   name: girishpnpipelinesjavascriptdocker 
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: girishpnpipelinesjavascriptdocker
   template:
     metadata:
       labels:
