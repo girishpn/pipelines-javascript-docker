@@ -17,7 +17,6 @@ spec:
           image: "gpreg2.azurecr.io/aks2"
           ports:
           - containerPort: 8080
-		  
 ---
 apiVersion: v1
 kind: Service
