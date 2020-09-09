@@ -42,8 +42,8 @@ jobs:
       with:
         namespace: aks1e4c4
         manifests: |
-          manifests/deployment-2.yml
-          manifests/service-1.yml
+          manifests/deployment-2-git-actions.yml
+          manifests/service-1-git-actions.yml
         images: |
           gpreg1.azurecr.io/aks1:${{ github.sha }}
         imagepullsecrets: |
